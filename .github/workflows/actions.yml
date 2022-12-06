@@ -63,3 +63,10 @@ jobs:
       run: |
           cd csharp-netcore-client
           ls -lah
+          cat README.md
+          cat git_push.sh
+          cat src/ExampleApi.Client.sln
+          cat src/ExampleApi.Client/ExampleApi.Client.csproj
+          dotnet restore
+          dotnet build --configuration Release --no-restore
+          dotnet pack -c Release
