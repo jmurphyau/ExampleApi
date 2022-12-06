@@ -49,12 +49,14 @@ jobs:
 
     - name: Copy openapi.json
       run: |
-          cp ${{ github.workspace }}/bin/Release/*/openapi.json ${{ github.workspace }}
+          cp ${{ github.workspace }}/bin/Release/*/openapi.json ${{ github.workspace }}; cp ${{ github.workspace }}/generator-config-csharp-netcore.yml ${{ github.workspace }};
 
     - name: Generate csharp-netcore
       uses: openapi-generators/openapitools-generator-action@v1
       with:
         generator: csharp-netcore
+        config-file: generator-config-csharp-netcore.yml
+
 
       # Do something with the generated client (likely publishing it somewhere)
     - name: Do something with the client
