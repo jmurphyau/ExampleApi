@@ -1,0 +1,48 @@
+name: build-publish
+
+on:
+  push:
+    tags: 'v*'
+
+env:
+  DOTNET_VERSION: '7.0.100' # The .NET SDK version to use
+
+jobs:
+  build-publish:
+    runs-on: ubuntu-latest
+    name: build-publish
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Setup NuGet
+      uses: nuget/setup-nuget@v1
+      with:
+        nuget-version: latest
+
+    - name: Add NuGet source
+      run: dotnet nuget update source github -u github -p ${{ secrets.PAT }} --store-password-in-clear-text
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Install dependencies
+      run: dotnet restore
+
+    - name: Install tools
+      run: dotnet tool restore
+
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+
+    - name: Publish
+      run: dotnet pack -c Release
+
+    # - name: Publish
+    #   run: dotnet nuget push .\bin\Release\*.nupkg --source github
