@@ -50,11 +50,11 @@ jobs:
     - name: Generate csharp-netcore
       uses: openapi-generators/openapitools-generator-action@v1
       with:
-        generator: csharp-netcore
-        openapi-file: ./bin/Release/openapi.json
+        generator: openapi-client-csharp-netcore
+        openapi-file: ${{ github.workspace }}/bin/Release/openapi.json
 
       # Do something with the generated client (likely publishing it somewhere)
     - name: Do something with the client
       run: |
-          cd typescript-angular-client
+          cd openapi-client-csharp-netcore
           ls -lah
