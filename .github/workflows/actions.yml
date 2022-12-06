@@ -47,19 +47,14 @@ jobs:
     # - name: Publish
     #   run: dotnet nuget push .\bin\Release\*.nupkg --source github
 
-  generate-clients:
-    runs-on: ubuntu-latest
-    name: generate-clients
-    needs: [build-publish]
-    steps:
-      - name: Generate csharp-netcore
-        uses: openapi-generators/openapitools-generator-action@v1
-        with:
-          generator: csharp-netcore
-          openapi-file: ./bin/Release/openapi.json
+    - name: Generate csharp-netcore
+      uses: openapi-generators/openapitools-generator-action@v1
+      with:
+        generator: csharp-netcore
+        openapi-file: ./bin/Release/openapi.json
 
       # Do something with the generated client (likely publishing it somewhere)
-      - name: Do something with the client
-        run: |
+    - name: Do something with the client
+      run: |
           cd typescript-angular-client
           ls -lah
