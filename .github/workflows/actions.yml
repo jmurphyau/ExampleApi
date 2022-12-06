@@ -22,7 +22,7 @@ jobs:
         nuget-version: latest
 
     - name: Add NuGet source
-      run: dotnet nuget update source github -u github -p ${{ secrets.MACHINE_USER_PAT }} --store-password-in-clear-text
+      run: dotnet nuget update source github -u github -p ${{ secrets.PAT }} --store-password-in-clear-text
 
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
