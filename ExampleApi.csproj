@@ -6,7 +6,19 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>ExampleApi</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <RepositoryUrl>https://github.com/jmurphyau/$(MSBuildProjectName)</RepositoryUrl>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
+
+  <Target Name="PostClean" AfterTargets="Clean">
+    <!-- common vars https://msdn.microsoft.com/en-us/library/c02as0cs.aspx?f=255&MSPPError=-2147217396 -->
+    <RemoveDir Directories="$(TargetDir)" />
+    <!-- bin -->
+    <RemoveDir Directories="$(SolutionDir).vs" />
+    <!-- .vs -->
+    <RemoveDir Directories="$(ProjectDir)$(BaseIntermediateOutputPath)" />
+    <!-- obj -->
+  </Target>
 
   <ItemGroup>
     <PackageReference Include="GitVersion.MsBuild" Version="5.11.1">
@@ -17,16 +29,15 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-    <!-- <OpenApiReference Include="openapi.json" /> -->
   </ItemGroup>
 
   <Target Name="DisplayMessage" AfterTargets="Build">
     <Message Importance="High" Text="GitVersion_InformationalVersion: $(GitVersion_InformationalVersion)" />
   </Target>
 
-  <Target Name="OpenAPI" AfterTargets="Build" Condition="$(Configuration)=='Debug'">
-    <Exec Command="dotnet swagger tofile --output swagger-$(Version).yaml --yaml $(OutputPath)$(AssemblyName).dll $(Version)" WorkingDirectory="$(ProjectDir)" />
-    <Exec Command="dotnet swagger tofile --output swagger-$(Version).json $(OutputPath)$(AssemblyName).dll $(Version)" WorkingDirectory="$(ProjectDir)" />
-</Target>
+  <Target Name="OpenAPI" AfterTargets="Build">
+    <Exec Command="dotnet swagger tofile --output $(OutputPath)openapi.yaml --yaml $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" />
+    <Exec Command="dotnet swagger tofile --output $(OutputPath)openapi.json $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" />
+  </Target>
 
 </Project>

@@ -1,0 +1,62 @@
+ame: build-publish
+
+on:
+  push:
+    tags: 'v*'
+
+env:
+  DOTNET_VERSION: '7.0.100' # The .NET SDK version to use
+
+jobs:
+  build-publish:
+    runs-on: ubuntu-latest
+    name: build-publish
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Setup NuGet
+      uses: nuget/setup-nuget@v1
+      with:
+        nuget-version: latest
+
+    - name: Add NuGet source
+      run: dotnet nuget update source github -u github -p ${{ secrets.MACHINE_USER_PAT }} --store-password-in-clear-text
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Install dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+
+    - name: Publish
+      run: dotnet pack -c Release
+
+    # - name: Publish
+    #   run: dotnet nuget push .\bin\Release\*.nupkg --source github
+
+  generate-angular-client:
+    runs-on: ubuntu-latest
+    name: generate-angular-client
+    needs: [build-publish]
+    steps:
+      - name: Generate csharp-netcore
+        uses: openapi-generators/openapitools-generator-action@v1
+        with:
+          generator: csharp-netcore
+          openapi-file: ./bin/Release/openapi.json
+
+      # Do something with the generated client (likely publishing it somewhere)
+      - name: Do something with the client
+        run: |
+          cd typescript-angular-client
+          ls -lah
