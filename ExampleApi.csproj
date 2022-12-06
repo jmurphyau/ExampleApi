@@ -25,8 +25,8 @@
   </Target>
 
   <Target Name="OpenAPI" AfterTargets="Build" Condition="$(Configuration)=='Debug'">
-    <Exec Command="dotnet swagger tofile --output ./wwwroot/swagger/v1/swagger.yaml --yaml $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" />
-    <Exec Command="dotnet swagger tofile --output ./wwwroot/swagger/v1/swagger.json $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" />
+    <Exec Command="dotnet swagger tofile --output swagger-$(Version).yaml --yaml $(OutputPath)$(AssemblyName).dll $(Version)" WorkingDirectory="$(ProjectDir)" />
+    <Exec Command="dotnet swagger tofile --output swagger-$(Version).json $(OutputPath)$(AssemblyName).dll $(Version)" WorkingDirectory="$(ProjectDir)" />
 </Target>
 
 </Project>
