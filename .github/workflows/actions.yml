@@ -54,10 +54,10 @@ jobs:
     - name: Generate csharp-netcore
       uses: openapi-generators/openapitools-generator-action@v1
       with:
-        generator: openapi-client-csharp-netcore
+        generator: csharp-netcore
 
       # Do something with the generated client (likely publishing it somewhere)
     - name: Do something with the client
       run: |
-          cd openapi-client-csharp-netcore
+          cd csharp-netcore
           ls -lah
