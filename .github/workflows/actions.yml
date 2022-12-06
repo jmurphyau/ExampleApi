@@ -47,11 +47,14 @@ jobs:
     # - name: Publish
     #   run: dotnet nuget push .\bin\Release\*.nupkg --source github
 
+    - name: Copy openapi.json
+      run: |
+          cp ${{ github.workspace }}/bin/Release/*/openapi.json ${{ github.workspace }}
+
     - name: Generate csharp-netcore
       uses: openapi-generators/openapitools-generator-action@v1
       with:
         generator: openapi-client-csharp-netcore
-        openapi-file: ${{ github.workspace }}/bin/Release/*/openapi.json
 
       # Do something with the generated client (likely publishing it somewhere)
     - name: Do something with the client
