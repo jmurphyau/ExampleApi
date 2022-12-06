@@ -1,4 +1,4 @@
-ame: build-publish
+name: build-publish
 
 on:
   push:
@@ -44,7 +44,7 @@ jobs:
     # - name: Publish
     #   run: dotnet nuget push .\bin\Release\*.nupkg --source github
 
-  generate-angular-client:
+  generate-clients:
     runs-on: ubuntu-latest
     name: generate-angular-client
     needs: [build-publish]
