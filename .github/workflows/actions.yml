@@ -50,7 +50,6 @@ jobs:
     - name: Copy required files
       run: |
           cp ${{ github.workspace }}/bin/Release/*/openapi.json ${{ github.workspace }}/
-          cp ${{ github.workspace }}/generator-config-csharp-netcore.yml ${{ github.workspace }}/
 
     - name: Generate csharp-netcore
       uses: openapi-generators/openapitools-generator-action@v1
