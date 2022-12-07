@@ -60,6 +60,24 @@ jobs:
         config-file: generator-config-typescript.yml
         command-args: '-p npmVersion=${{ github.ref_name }}'
 
+    - name: Do something with the client
+      run: |
+          cd typescript-client
+          ls -lah
+          git status
+          cat README.md
+          cat git_push.sh
+          cat package.json
+
+          git config --global user.email "jmurphyau@github.com"
+          git config --global user.name "jmurphyau / ExampleApi"
+
+          git add .
+          git commit -m "$(git -C .. describe --tags --abbrev=0)"
+          git push
+          git tag "$(git -C .. describe --tags --abbrev=0)"
+          git push --tags
+
     - name: Generate csharp-netcore
       uses: openapi-generators/openapitools-generator-action@v1
       with:
