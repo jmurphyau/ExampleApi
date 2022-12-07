@@ -44,8 +44,8 @@ jobs:
     - name: Publish
       run: dotnet pack -c Release
 
-    # - name: Publish
-    #   run: dotnet nuget push .\bin\Release\*.nupkg --source github
+    - name: Publish
+      run: dotnet nuget push .\bin\Release\*.nupkg --source github
 
     - name: Copy required files
       run: |
@@ -57,7 +57,6 @@ jobs:
       with:
         generator: csharp-netcore
         config-file: generator-config-csharp-netcore.yml
-
 
       # Do something with the generated client (likely publishing it somewhere)
     - name: Do something with the client
