@@ -45,7 +45,7 @@ jobs:
       run: dotnet pack -c Release
 
     - name: Publish
-      run: dotnet nuget push .\bin\Release\*.nupkg --source github
+      run: dotnet nuget push ./bin/Release/*.nupkg --source github
 
     - name: Copy required files
       run: |
