@@ -1,8 +1,10 @@
 
-# templateDir: generators/typescript-node
+templateDir: generators/typescript
 
 additionalProperties:
-    npmName: example-api-client
-    supportsES6: true
-    npmRepository: 'https://npm.pkg.github.com'
+    npmName: '@jmurphyau/example-api-client'
+    supportsES6: false
+    npmRepository: 'https://npm.pkg.github.com/jmurphyau'
 
+files:
+  .github/workflows/actions.yml: {}
