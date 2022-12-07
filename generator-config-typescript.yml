@@ -8,3 +8,4 @@ additionalProperties:
 
 files:
   .github/workflows/actions.yml: {}
+  .npmrc: {}
