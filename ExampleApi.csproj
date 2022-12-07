@@ -4,10 +4,10 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>ExampleApi</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <RepositoryUrl>https://github.com/jmurphyau/$(MSBuildProjectName)</RepositoryUrl>
     <IsPackable>true</IsPackable>
+    <!--<UpdateAssemblyInfo>false</UpdateAssemblyInfo>-->
   </PropertyGroup>
 
   <Target Name="PostClean" AfterTargets="Clean">
@@ -31,13 +31,29 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+    <ItemGroup>
+      <Content Remove="generator-output\**" />
+      <Compile Remove="generator-output\**" />
+      <EmbeddedResource Remove="generator-output\**" />
+      <None Remove="generator-output\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="generators\**" />
+      <Compile Remove="generators\**" />
+      <EmbeddedResource Remove="generators\**" />
+      <None Remove="generators\**" />
+    </ItemGroup>
+
   <Target Name="DisplayMessage" AfterTargets="Build">
     <Message Importance="High" Text="GitVersion_InformationalVersion: $(GitVersion_InformationalVersion)" />
   </Target>
 
+
   <Target Name="OpenAPI" AfterTargets="Build">
-    <Exec Command="dotnet swagger tofile --output $(OutputPath)openapi.yaml --yaml $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" />
-    <Exec Command="dotnet swagger tofile --output $(OutputPath)openapi.json $(OutputPath)$(AssemblyName).dll v1" WorkingDirectory="$(ProjectDir)" />
+    <Exec Command="dotnet swagger tofile --output $(OutputPath)openapi.yaml --yaml $(OutputPath)$(AssemblyName).dll v$(GitVersion_FullSemVer)" WorkingDirectory="$(ProjectDir)" />
+    <Exec Command="dotnet swagger tofile --output $(OutputPath)openapi.json $(OutputPath)$(AssemblyName).dll v$(GitVersion_FullSemVer)" WorkingDirectory="$(ProjectDir)" />
   </Target>
+
 
 </Project>

@@ -15,12 +15,16 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 
+var assemblyName = Assembly.GetExecutingAssembly().GetName();
+var assemblyVersion = assemblyName.Version;
+var versionString = $"v{assemblyVersion.Major}.{assemblyVersion.Minor}.{assemblyVersion.Build}";
+
 // <snippet_Services>
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new OpenApiInfo
+    options.SwaggerDoc(versionString, new OpenApiInfo
     {
-        Version = "v1",
+        Version = versionString,
         Title = "ToDo API",
         Description = "An ASP.NET Core Web API for managing ToDo items",
         TermsOfService = new Uri("https://example.com/terms"),
@@ -49,11 +53,20 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options => {
+      options.SwaggerEndpoint($"/swagger/{versionString}/swagger.json", versionString);
+      options.RoutePrefix = "swagger";
+    });
+} else {
+   app.UseSwagger();
+   app.UseSwaggerUI(options => {
+    options.SwaggerEndpoint($"/swagger/{versionString}/swagger.json", versionString);
+    options.RoutePrefix = "swagger";
+  });
 }
 // </snippet_Middleware>
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

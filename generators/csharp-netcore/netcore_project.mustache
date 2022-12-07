@@ -1,0 +1,70 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RepositoryUrl>https://github.com/jmurphyau/$(MSBuildProjectName)</RepositoryUrl>
+    <UpdateAssemblyInfo>false</UpdateAssemblyInfo>
+  </PropertyGroup>
+
+  <Target Name="PostClean" AfterTargets="Clean">
+    <!-- common vars https://msdn.microsoft.com/en-us/library/c02as0cs.aspx?f=255&MSPPError=-2147217396 -->
+    <RemoveDir Directories="$(TargetDir)" />
+    <!-- bin -->
+    <RemoveDir Directories="$(SolutionDir).vs" />
+    <!-- .vs -->
+    <RemoveDir Directories="$(ProjectDir)$(BaseIntermediateOutputPath)" />
+    <!-- obj -->
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="GitVersion.MsBuild" Version="5.11.1">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    {{#useCompareNetObjects}}
+    <PackageReference Include="CompareNETObjects" Version="4.61.0" />
+    {{/useCompareNetObjects}}
+    {{^useGenericHost}}
+    <PackageReference Include="JsonSubTypes" Version="1.9.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    {{/useGenericHost}}
+      {{#useRestSharp}}
+    <PackageReference Include="RestSharp" Version="108.0.2" />
+      {{/useRestSharp}}
+      {{#useGenericHost}}
+    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+      {{#supportsRetry}}
+    <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="5.0.1" />
+      {{/supportsRetry}}
+      {{/useGenericHost}}
+      {{#supportsRetry}}
+    <PackageReference Include="Polly" Version="7.2.3" />
+      {{/supportsRetry}}
+    {{#validatable}}
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    {{/validatable}}
+  </ItemGroup>
+
+  <Target Name="DisplayMessage" AfterTargets="Build">
+    <Message Importance="High" Text="GitVersion_InformationalVersion: $(GitVersion_InformationalVersion)" />
+  </Target>
+
+  <Target Name="CreateXml" AfterTargets="Build">
+    <ItemGroup>
+      <Line Include='&lt;%3Fxml version="1.0" encoding="utf-8"%3F&gt;' />
+      <Line Include='&lt;configuration&gt;' />
+      <Line Include='  &lt;packageSources&gt;' />
+      <Line Include='    &lt;clear /&gt;' />
+      <Line Include='    &lt;add key="nuget" value="https://api.nuget.org/v3/index.json" /&gt;' />
+      <Line Include='    &lt;add key="github" value="https://nuget.pkg.github.com/jmurphyau/index.json" /&gt;' />
+      <Line Include='  &lt;/packageSources&gt;' />
+      <Line Include='&lt;/configuration&gt;' />
+    </ItemGroup>
+
+    <WriteLinesToFile File="$(OutputPath)nuget.config" Lines="@(Line)" Overwrite="true" />
+  </Target>
+</Project>

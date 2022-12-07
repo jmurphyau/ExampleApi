@@ -29,20 +29,23 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    - name: Install dependencies
-      run: dotnet restore
-
     - name: Install tools
       run: dotnet tool restore
 
+    - name: Install dependencies
+      run: dotnet restore src/*.Client/*.csproj
+
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build --configuration Release --no-restore src/*.Client/*.csproj
 
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: |
+        dotnet restore src/*.Client.Test/*.csproj
+        dotnet build --configuration Release --verbosity d --no-restore src/*.Client.Test/*.csproj
+        dotnet test --configuration Release --verbosity d --no-build src/*.Client.Test/*.csproj
 
     - name: Publish
-      run: dotnet pack -c Release
+      run: dotnet pack --configuration Release src/*.Client/*.csproj
 
     # - name: Publish
     #   run: dotnet nuget push .\bin\Release\*.nupkg --source github

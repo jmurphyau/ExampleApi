@@ -2,12 +2,6 @@
   "version": 1,
   "isRoot": true,
   "tools": {
-    "swashbuckle.aspnetcore.cli": {
-      "version": "6.4.0",
-      "commands": [
-        "swagger"
-      ]
-    },
     "gitversion.tool": {
       "version": "5.11.1",
       "commands": [
