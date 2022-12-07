@@ -1,6 +1,6 @@
 # ExampleApi
 
-An example
+An example, etc
 
 ## For developers needing to use ExampleApi as a library in their own code
 
