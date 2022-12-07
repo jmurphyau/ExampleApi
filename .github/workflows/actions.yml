@@ -68,6 +68,10 @@ jobs:
           cat git_push.sh
           cat ExampleApi.Client.sln
           cat src/ExampleApi.Client/ExampleApi.Client.csproj
+
+          git config --global user.email "jmurphyau@github.com"
+          git config --global user.name "jmurphyau / ExampleApi"
+
           git add .
           git commit -m "$(git -C .. describe --tags --abbrev=0)"
           git push
