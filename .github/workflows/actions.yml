@@ -51,6 +51,14 @@ jobs:
       run: |
           cp ${{ github.workspace }}/bin/Release/*/openapi.json ${{ github.workspace }}/
           git clone https://jmurphyau:${{ secrets.PAT }}@github.com/jmurphyau/ExampleApi.Client.git csharp-netcore-client
+          git clone https://jmurphyau:${{ secrets.PAT }}@github.com/jmurphyau/example-api-client.git typescript-client
+
+    - name: Generate typescript
+      uses: openapi-generators/openapitools-generator-action@v1
+      with:
+        generator: typescript
+        config-file: generator-config-typescript.yml
+        command-args: '-p npmVersion=${{ github.ref_name }}'
 
     - name: Generate csharp-netcore
       uses: openapi-generators/openapitools-generator-action@v1

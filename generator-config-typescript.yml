@@ -1,0 +1,8 @@
+
+# templateDir: generators/typescript-node
+
+additionalProperties:
+    npmName: example-api-client
+    supportsES6: true
+    npmRepository: 'https://npm.pkg.github.com'
+
