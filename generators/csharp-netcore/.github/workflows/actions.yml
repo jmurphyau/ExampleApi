@@ -47,5 +47,5 @@ jobs:
     - name: Publish
       run: dotnet pack --configuration Release src/*.Client/*.csproj
 
-    # - name: Publish
-    #   run: dotnet nuget push .\bin\Release\*.nupkg --source github
+    - name: Publish
+      run: dotnet nuget push ./bin/Release/*.nupkg --source github
